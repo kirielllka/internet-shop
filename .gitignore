@@ -1,0 +1,6 @@
+venv
+*.ini
+__pycache__
+.env
+migrations
+.idea
