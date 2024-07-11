@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from .authDAO import UserDAO
 
-from Base.responces import BadPatchResponce, SuccessResponce
+from Base.responces import BadPatchResponce, SuccessResponce, BadDeleteResponce
 
 from database import session_maker
 from .models import Users
@@ -120,5 +120,14 @@ class UserAPIVIEW(APIView):
             serializer = self.serializer_class(result[0])
             return Response(serializer.data)
 
-    def
+
+class UserDelete(APIView):
+    @role_required(1,2)
+    def delete(self,request, *args,**kwargs):
+        pk = kwargs.get('pk')
+        user = UserDAO.find_by_id(Users,pk)
+        if not user:
+            return BadDeleteResponce(data={'msg':'bad delete'})
+        UserDAO.delete(Users,pk)
+        return SuccessResponce(data={'msg':'Success delete'})
 
